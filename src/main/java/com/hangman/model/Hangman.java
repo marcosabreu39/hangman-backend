@@ -61,20 +61,27 @@ public class Hangman {
 	 *  Letter choose by player
 	 */
 	@Transient
-	private String choosenLetter;
+	private String chosenLetter;
 	
 	/**
 	 *  String representation of all choosen letters
 	 */
 	@Transient
-	private String allChoosenLetters = "";
+	private String allChosenLetters = "";
+	
 	
 	/**
-	 *  List of letters already choosen by player
+	 * Precise letters chosen by player
+	 */
+	@Transient
+	private String preciseChosenLetters = "";
+	
+	/**
+	 *  List of letters already chosen by player
 	 */
 	@Transient
 	@JsonDeserialize(using = ListDeserializer.class)
-	private List<String>allChoosenLettersList = new ArrayList<>();
+	private List<String>allChosenLettersList = new ArrayList<>();
 	
 	/**
 	 *  Letters that will displayed in the game as status
@@ -102,7 +109,7 @@ public class Hangman {
 	private int statusGame = 1;
 	
 	/**
-	 * If true, should update the image in the game.
+	 * If 2, Hangman's game image should be updated, if 1, not;
 	 */
 	@Transient
 	private int updateImage = 1;

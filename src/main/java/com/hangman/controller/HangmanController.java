@@ -101,7 +101,7 @@ public class HangmanController {
 			} else {
 				final Map<String, String> hangmanMap = new ConcurrentHashMap<>();
 				hangmanMap.put("keyWord", hangman.getKeyWord());
-				hangmanMap.put("allChoosenLettersList", hangman.getAllChoosenLettersList().toString());
+				hangmanMap.put("allChosenLettersList", hangman.getAllChosenLettersList().toString());
 				hangmanMap.put("displayedLettersList", hangman.getDisplayedLettersList().toString());
 				response = new ResponseEntity<>(hangmanMap, HttpStatus.OK);
 			}
@@ -127,7 +127,7 @@ public class HangmanController {
 					final Hangman hangmanRes = hangmanService.proccessGame(hangman);
 					hangmanMap = new ConcurrentHashMap<>();
 					hangmanMap.put("keyWord", hangmanRes.getKeyWord());
-					hangmanMap.put("allChoosenLettersList", hangman.getAllChoosenLettersList().toString());
+					hangmanMap.put("allChosenLettersList", hangman.getAllChosenLettersList().toString());
 					hangmanMap.put("displayedLettersList", hangman.getDisplayedLettersList().toString());
 					hangmanMap.put("statusGame", String.valueOf(hangman.getStatusGame()));
 					hangmanMap.put("gameCounter", String.valueOf(hangman.getGameCounter()));

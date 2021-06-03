@@ -104,7 +104,7 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	private void initializeAttributes(Hangman hangman) throws BusinessException {
 		hangman.setDisplayedLettersList(initializeDisplayedList(hangman.getKeyWord()));
 		hangman.setDisplayedLetters(initializeDisplayedLetters(hangman.getKeyWord()));
-		hangman.setAllChoosenLettersList(initializeDisplayedList(hangman.getKeyWord()));
+		hangman.setAllChosenLettersList(initializeDisplayedList(hangman.getKeyWord()));
 		hangman.setGameCounter(hangman.getKeyWord().length());
 	}
 	
@@ -127,12 +127,12 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	 * @param hangman
 	 */
 	private void checkSupposedWord(final Hangman hangman) throws BusinessException {
-		if (Utils.isNotEmptyString(hangman.getSupposedWord()) && hangman.getSupposedWord().length() > 0) {
+		if (Utils.isNotEmptyString(hangman.getSupposedWord())) {
 			if (hangman.getSupposedWord().equals(hangman.getKeyWord())) {
 				hangman.setStatusGame(2);
 			} else {
 				hangman.setStatusGame(3);
-				hangman.setUpdateImage(2);
+				hangman.setUpdateImage(1);
 			}
 		}
 	}
@@ -158,17 +158,45 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	 * @param keyWordLetter
 	 */
 	
-	private void updateChoosenLetters(final Hangman hangman, final Hangman hangmanSession)
+	private void updateChosenLetters(final Hangman hangman, final Hangman hangmanSession)
 			throws BusinessException {
-		hangmanSession.setAllChoosenLetters(hangmanSession.getAllChoosenLetters() + hangman.getChoosenLetter());
-		hangman.setAllChoosenLetters(hangmanSession.getAllChoosenLetters());
-		List<Character> choosenLettersList = hangman.getAllChoosenLetters().chars().mapToObj(e -> (char) e)
+		hangmanSession.setAllChosenLetters(hangmanSession.getAllChosenLetters() + hangman.getChosenLetter());
+		hangman.setAllChosenLetters(hangmanSession.getAllChosenLetters());
+		List<Character> chosenLettersList = hangman.getAllChosenLetters().chars().mapToObj(e -> (char) e)
 				.collect(Collectors.toList());
 		List<String> chsnList = new ArrayList<>();
-		choosenLettersList.forEach(chsnLetter -> {
+		chosenLettersList.forEach(chsnLetter -> {
 			chsnList.add(chsnLetter.toString());
 		});
-		hangman.setAllChoosenLettersList(chsnList);
+		hangman.setAllChosenLettersList(chsnList);
+	}
+	
+	/**
+	 * Updates chosen letters string
+	 * 
+	 * @param hangman
+	 * @param keyWordLetter
+	 */
+	private void updatePreciseChosenLetters(final Hangman hangman, final String keyWordLetter) {
+		String preciseChosenLetters = hangman.getPreciseChosenLetters() + keyWordLetter;
+		hangman.setPreciseChosenLetters(preciseChosenLetters);
+	}
+	
+	/**
+	 * Verifies if the Hangman game must be finalized
+	 * 
+	 * @param hangman
+	 */
+	private void proccessGameConclusion(final Hangman hangman) {
+		if (hangman.getGameCounter() > 1) {
+			if(hangman.getPreciseChosenLetters().length() >= hangman.getKeyWord().length()) {
+				hangman.setStatusGame(2);
+			} else {
+			httpSession.setAttribute("hangmanSession", hangman);
+			}
+		} else {
+			hangman.setStatusGame(3);
+		}
 	}
 	
 	/**
@@ -184,19 +212,15 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 
 			hangman.setDisplayedLetters(hangmanSession.getDisplayedLetters());
 			hangman.setDisplayedLettersList(hangmanSession.getDisplayedLettersList());
+			hangman.setPreciseChosenLetters(hangmanSession.getPreciseChosenLetters());
 			for (int i = 0; i < keyWordArray.length; i++) {
-				if (hangman.getChoosenLetter().charAt(0) == (keyWordArray[i])) {
+				if (hangman.getChosenLetter().charAt(0) == (keyWordArray[i])) {
+					updatePreciseChosenLetters(hangman, String.valueOf(keyWordArray[i]));
 					updateDisplayedLetters(hangman, String.valueOf(keyWordArray[i]), i);
 				} 
 			}
-			hangman.setGameCounter(hangman.getGameCounter() - 1);
-			if (hangman.getGameCounter() > 1) {
-				httpSession.setAttribute("hangmanSession", hangman);
-			} else {
-				hangman.setStatusGame(3);
-				hangman.setUpdateImage(2);
-			}
-
+//			hangman.setGameCounter(hangman.getGameCounter() -1);
+			proccessGameConclusion(hangman);
 		}
 	}
 	
@@ -211,16 +235,16 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 			String[] displayLettersArr = { "*", "W", "I", "N", "N", "3", "R", "*" };
 			final List<String> displayList = Arrays.asList(displayLettersArr);
 			hangman.setDisplayedLettersList(displayList);
-			String[] choosenWordsArr = { "*", "P", "L", "4", "Y", "*", "4", "G", "4", "I", "N", "*" };
-			final List<String> chooseList = Arrays.asList(choosenWordsArr);
-			hangman.setAllChoosenLettersList(chooseList);
+			String[] chosenWordsArr = { "*", "P", "L", "4", "Y", "*", "4", "G", "4", "I", "N", "*" };
+			final List<String> chooseList = Arrays.asList(chosenWordsArr);
+			hangman.setAllChosenLettersList(chooseList);
 		} else if (hangman.getStatusGame() == 3) {
 			String[] displayLettersArr = { "#", "L", "0", "0", "S", "3", "R", "#" };
 			final List<String> displayList = Arrays.asList(displayLettersArr);
 			hangman.setDisplayedLettersList(displayList);
-			String[] choosenWordsArr = { "#", "T", "R", "Y", "#", "4", "G", "4", "I", "N", "#" };
-			final List<String> choosenList = Arrays.asList(choosenWordsArr);
-			hangman.setAllChoosenLettersList(choosenList);
+			String[] chosenWordsArr = { "#", "T", "R", "Y", "#", "4", "G", "4", "I", "N", "#" };
+			final List<String> chosenList = Arrays.asList(chosenWordsArr);
+			hangman.setAllChosenLettersList(chosenList);
 		}
 	}
 	
@@ -230,13 +254,12 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	 * @param hangman
 	 * @param hangmanSession
 	 */
-	private void checkUpdateImg(final Hangman hangman, final Hangman hangmanSession) {
-		String lettersHangman = hangman.getDisplayedLetters().replaceAll("__", "");
-		String lettersHangmanSession = hangmanSession.getDisplayedLetters().replaceAll("__", "");
-		if (lettersHangman.length() > lettersHangmanSession.length()) {
-			hangman.setUpdateImage(2);
-		} else {
+	private void proccessUpdateStatusGame(final Hangman hangman, final Hangman hangmanSession) {
+		if (hangman.getPreciseChosenLetters().length() > hangmanSession.getPreciseChosenLetters().length()) {
 			hangman.setUpdateImage(1);
+		} else {
+			hangman.setUpdateImage(2);
+			hangman.setGameCounter(hangman.getGameCounter() -1);
 		}
 	}
 	
@@ -251,10 +274,10 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 		hangman.setDisplayedLetters(hangmanSession.getDisplayedLetters());
 		hangman.setGameCounter(hangmanSession.getGameCounter());
 		checkSupposedWord(hangman);
-		updateChoosenLetters(hangman, hangmanSession);
+		updateChosenLetters(hangman, hangmanSession);
 		proccessValidGame(hangman, hangmanSession, keyWordArray);
+		proccessUpdateStatusGame(hangman, hangmanSession);
 		proccessEndGame(hangman, hangmanSession);
-		checkUpdateImg(hangman, hangmanSession);
 		
 		return hangman;
 	}

@@ -50,7 +50,8 @@ public class Utils {
 	 * @return
 	 */
 	public static boolean isNotEmptyString(final String string) {
-		return null != string && !"".equals(string);
+		String str = string == null ? "" : string;
+		return !str.equals("") && str.length() > 0;
 	}
 	
 	/**
