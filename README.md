@@ -27,5 +27,5 @@ Update Maven dependencies;
 
 Deploy with Embedded Apache Tomcat;
 
-Follow the steps of Hangman-Frontend `README.md`;
+Follow steps of Hangman-Frontend `README.md`;
 
