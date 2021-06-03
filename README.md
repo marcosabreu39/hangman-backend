@@ -1,5 +1,7 @@
 # Java Application using Spring Boot 2      
 
+## Backend of hangman's game application
+
 ## Technologies
 
 * Java 8;
@@ -13,9 +15,7 @@
 * Eclipse IDE;
 * Database H2;
 
-## Backend of hangman's game application
-
-### teps to deploy Hangman-Backend locally:
+### Steps to deploy Hangman-Backend locally:
 
 Clone this repository and Hangman-Frontend's repository;
 
