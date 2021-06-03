@@ -1,4 +1,4 @@
-### Java Application using Spring Boot 2      
+# Java Application using Spring Boot 2      
 
 ## Technologies
 
@@ -15,7 +15,7 @@
 
 ## Backend of hangman's game application
 
-# teps to deploy Hangman-Backend locally:
+### teps to deploy Hangman-Backend locally:
 
 Clone this repository and Hangman-Frontend's repository;
 
