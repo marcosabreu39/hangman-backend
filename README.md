@@ -15,7 +15,7 @@
 
 ## Backend of hangman's game application
 
-#Steps to deploy Hangman-Backend locally:
+# teps to deploy Hangman-Backend locally:
 
 Clone this repository and Hangman-Frontend's repository;
 
