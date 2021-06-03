@@ -1,6 +1,6 @@
 # Java Application using Spring Boot 2      
 
-## Backend of hangman's game application
+## Back end of hangman's game application
 
 ## Technologies
 
