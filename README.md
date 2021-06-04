@@ -7,6 +7,7 @@
 * Java 8;
 * MVC Architecture;
 * Spring Boot 2 Data Rest;
+* Spring Boot 2 Data Repository;
 * Spring Boot 2 Embedded Apache Tomcat;
 * Jackson Databind;
 * SL4j Logger;
