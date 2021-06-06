@@ -122,22 +122,6 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	}
 
 	/**
-	 * Verifies if the inserted word matches key word
-	 * 
-	 * @param hangman
-	 */
-	private void checkSupposedWord(final Hangman hangman) throws BusinessException {
-		if (Utils.isNotEmptyString(hangman.getSupposedWord())) {
-			if (hangman.getSupposedWord().equals(hangman.getKeyWord())) {
-				hangman.setStatusGame(2);
-			} else {
-				hangman.setStatusGame(3);
-				hangman.setUpdateImage(1);
-			}
-		}
-	}
-
-	/**
 	 * 
 	 * @param hangman
 	 * @param keyWordLetter
@@ -200,7 +184,7 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	}
 	
 	/**
-	 * Proccesses Hangman game if valid yet
+	 * Processes the Hangman game if valid yet
 	 * 
 	 * @param hangman
 	 * @param hangmanSession
@@ -225,12 +209,12 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	}
 	
 	/**
-	 * Proccesses the end of Hangman game
+	 * Processes the end of Hangman game
 	 * 
 	 * @param hangman
 	 * @param hangmanSession
 	 */
-	private void proccessEndGame(Hangman hangman, Hangman hangmanSession) {
+	private void proccessEndGame(Hangman hangman) {
 		if (hangman.getStatusGame() == 2) {
 			String[] displayLettersArr = { "*", "W", "I", "N", "N", "3", "R", "*" };
 			final List<String> displayList = Arrays.asList(displayLettersArr);
@@ -249,7 +233,7 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	}
 	
 	/**
-	 * Verifies if hangman image is elegible to update
+	 * Verifies if the hangman's images are elegible to update
 	 * 
 	 * @param hangman
 	 * @param hangmanSession
@@ -264,21 +248,41 @@ public class HangmanServiceImpl implements Serializable, HangmanService {
 	}
 	
 	/**
-	 * Proccesses the Hangman game
+	 * Processes the Hangman game with a chosen letter inserted by player
 	 * 
 	 */
 	@Override
-	public Hangman proccessGame(final Hangman hangman) throws BusinessException {
+	public Hangman proccessChosenLetter(final Hangman hangman) throws BusinessException {
 		final char[] keyWordArray = hangman.getKeyWord().toCharArray();
 		Hangman hangmanSession = (Hangman) httpSession.getAttribute("hangmanSession");
 		hangman.setDisplayedLetters(hangmanSession.getDisplayedLetters());
 		hangman.setGameCounter(hangmanSession.getGameCounter());
-		checkSupposedWord(hangman);
 		updateChosenLetters(hangman, hangmanSession);
 		proccessValidGame(hangman, hangmanSession, keyWordArray);
 		proccessUpdateStatusGame(hangman, hangmanSession);
-		proccessEndGame(hangman, hangmanSession);
+		proccessEndGame(hangman);
 		
 		return hangman;
 	}
+	
+	/**
+	 * Processes the Hangman game with a word inserted by the user and verifies if match the key word
+	 * 
+	 * @param hangman
+	 */
+	@Override
+	public Hangman proccessSupposedWord(final Hangman hangman) throws BusinessException {
+		if (Utils.isNotEmptyString(hangman.getSupposedWord())) {
+			if (hangman.getSupposedWord().equals(hangman.getKeyWord())) {
+				hangman.setStatusGame(2);
+			} else {
+				hangman.setStatusGame(3);
+				hangman.setUpdateImage(1);
+			}
+		}
+		
+		proccessEndGame(hangman);
+		
+		return hangman;
+	}	
 }

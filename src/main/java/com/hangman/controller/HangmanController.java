@@ -39,7 +39,7 @@ public class HangmanController {
 
 	
 	/**
-	 * Obtains hangman's words saved into database.
+	 * Obtains Hangman game's words saved into database.
 	 * @return
 	 */
 	@GetMapping("/api/words")
@@ -114,17 +114,19 @@ public class HangmanController {
 	}
 	
 	/**
-	 * Obtains a random word from database.
+	 * Processes the Hangman game with a chosen letter by the player
+	 * 
+	 * @param hangman
 	 * @return
 	 */
-	@PostMapping("/api/word")
-	public ResponseEntity<Object> proccessGameRequisition(@RequestBody final Hangman hangman) {
+	@PostMapping("/api/letter")
+	public ResponseEntity<Object> proccessChosenLetter(@RequestBody final Hangman hangman) {
 			if (hangman == null || hangman.getKeyWord() == null || hangman.getKeyWord().equals("")) {
 				response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			} else {
 				Map<String, String> hangmanMap;
 				try {
-					final Hangman hangmanRes = hangmanService.proccessGame(hangman);
+					final Hangman hangmanRes = hangmanService.proccessChosenLetter(hangman);
 					hangmanMap = new ConcurrentHashMap<>();
 					hangmanMap.put("keyWord", hangmanRes.getKeyWord());
 					hangmanMap.put("allChosenLettersList", hangman.getAllChosenLettersList().toString());
@@ -140,4 +142,35 @@ public class HangmanController {
 			}
 		return response;
 	}
+	
+	/**
+	 * Processes the Hangman game with a word inserted by user supposed matches the key word
+	 * 
+	 * @param hangman
+	 * @return
+	 */
+	@PostMapping("/api/word")
+	public ResponseEntity<Object> proccessSupposedWord(@RequestBody final Hangman hangman) {
+			if (hangman == null || hangman.getKeyWord() == null || hangman.getKeyWord().equals("")) {
+				response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			} else {
+				Map<String, String> hangmanMap;
+				try {
+					final Hangman hangmanRes = hangmanService.proccessSupposedWord(hangman);
+					hangmanMap = new ConcurrentHashMap<>();
+					hangmanMap.put("keyWord", hangmanRes.getKeyWord());
+					hangmanMap.put("allChosenLettersList", hangman.getAllChosenLettersList().toString());
+					hangmanMap.put("displayedLettersList", hangman.getDisplayedLettersList().toString());
+					hangmanMap.put("statusGame", String.valueOf(hangman.getStatusGame()));
+					hangmanMap.put("gameCounter", String.valueOf(hangman.getGameCounter()));
+					hangmanMap.put("updateImage", String.valueOf(hangman.getUpdateImage()));
+					response = new ResponseEntity<>(hangmanMap, HttpStatus.OK);
+				} catch (BusinessException e) {
+					LOGGER.error("An error occurred obtaining hangman's words.", e);
+					response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+		return response;
+	}
+	
 }
