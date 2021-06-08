@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hangman.exception.BusinessException;
 import com.hangman.model.Hangman;
 import com.hangman.service.HangmanService;
-import com.hangman.utils.Utils;
+import com.hangman.utils.ExtractionUtils;
 
 /**
  * 
@@ -75,7 +75,7 @@ public class HangmanController {
 	@PostMapping("/api/words")
 	public ResponseEntity<Object> save(@RequestBody final String file) {
 		try {
-			if (Utils.isNotEmptyString(file)) {
+			if (ExtractionUtils.isNotEmptyString(file)) {
 				hangmanService.proccessFile(file);
 				response = new ResponseEntity<>(HttpStatus.CREATED);
 			} else {
@@ -103,6 +103,7 @@ public class HangmanController {
 				hangmanMap.put("keyWord", hangman.getKeyWord());
 				hangmanMap.put("allChosenLettersList", hangman.getAllChosenLettersList().toString());
 				hangmanMap.put("displayedLettersList", hangman.getDisplayedLettersList().toString());
+				hangmanMap.put("keyWordId", hangman.getKeyWordId().toString());
 				response = new ResponseEntity<>(hangmanMap, HttpStatus.OK);
 			}
 
@@ -134,6 +135,7 @@ public class HangmanController {
 					hangmanMap.put("statusGame", String.valueOf(hangman.getStatusGame()));
 					hangmanMap.put("gameCounter", String.valueOf(hangman.getGameCounter()));
 					hangmanMap.put("updateImage", String.valueOf(hangman.getUpdateImage()));
+					hangmanMap.put("keyWordId", hangman.getKeyWordId().toString());
 					response = new ResponseEntity<>(hangmanMap, HttpStatus.OK);
 				} catch (BusinessException e) {
 					LOGGER.error("An error occurred obtaining hangman's words.", e);
@@ -164,6 +166,7 @@ public class HangmanController {
 					hangmanMap.put("statusGame", String.valueOf(hangman.getStatusGame()));
 					hangmanMap.put("gameCounter", String.valueOf(hangman.getGameCounter()));
 					hangmanMap.put("updateImage", String.valueOf(hangman.getUpdateImage()));
+					hangmanMap.put("keyWordId", hangman.getKeyWordId().toString());
 					response = new ResponseEntity<>(hangmanMap, HttpStatus.OK);
 				} catch (BusinessException e) {
 					LOGGER.error("An error occurred obtaining hangman's words.", e);

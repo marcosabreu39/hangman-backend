@@ -1,5 +1,6 @@
 package com.hangman.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import com.hangman.exception.BusinessException;
  */
 
 @Component
-public class Utils {
+public class ExtractionUtils {
 
 	/**
 	 * Begin of the XML file's parent node
@@ -52,6 +53,24 @@ public class Utils {
 	public static boolean isNotEmptyString(final String string) {
 		String str = string == null ? "" : string;
 		return !str.equals("") && str.length() > 0;
+	}
+	
+	/**
+	 * Checks if a string is empty and returns true if correct
+	 * 
+	 */
+	public static boolean isEmptyString(final String string) {
+		String str = string == null ? "" : string;
+		return str.equals("");
+	}
+	
+	public static boolean isEmptyList(final List<String> list) {
+		List<String> lst = list == null ? new ArrayList<>() : list;
+		return lst.isEmpty();
+	}
+	
+	public static String handleNullString(String str) {
+		return str == null ? "" : str;
 	}
 	
 	/**

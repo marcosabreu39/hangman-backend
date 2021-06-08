@@ -23,7 +23,7 @@ import com.hangman.exception.BusinessException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class UtilsTest {
+public class ExtractionUtilsTest {
 
 	/**
 	 * Test variable for testIsNotEmptyString method.
@@ -45,15 +45,15 @@ public class UtilsTest {
 	 * Test method for isNotEmptyString method.
 	 */
 
-	private transient final Utils utils;
+	private transient final ExtractionUtils utils;
 
-	public UtilsTest() {
-		utils = new Utils();
+	public ExtractionUtilsTest() {
+		utils = new ExtractionUtils();
 	}
 
 	@Test
 	public void testIsNotEmptyString() {
-		assertTrue(Utils.isNotEmptyString(TEST_STRING), "====== Unexpected null or empty string! =======");
+		assertTrue(ExtractionUtils.isNotEmptyString(TEST_STRING), "====== Unexpected null or empty string! =======");
 	}
 
 	@Test

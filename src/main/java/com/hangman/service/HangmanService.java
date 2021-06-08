@@ -33,7 +33,35 @@ public interface HangmanService {
 	 */
 	Hangman getWord() throws BusinessException;
 
+	/**
+	 * 
+	 * @param hangman
+	 * @return
+	 * @throws BusinessException
+	 */
 	Hangman proccessChosenLetter(Hangman hangman) throws BusinessException;
-
+	
+	/**
+	 * 
+	 * @param hangman
+	 * @return
+	 * @throws BusinessException
+	 */
 	Hangman proccessSupposedWord(Hangman hangman) throws BusinessException;
+
+	/**
+	 * 
+	 * @param hangman
+	 * @return
+	 * @throws BusinessException
+	 */
+	Hangman getPriorStatusGame(Hangman hangman) throws BusinessException;
+
+	/**
+	 * 
+	 * @param hangman
+	 * @throws BusinessException
+	 */
+	void save(Hangman hangman) throws BusinessException;
+	
 }
