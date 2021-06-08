@@ -88,7 +88,7 @@ public class GameChosenLetterLifeCycle implements KeepGameRunningState, EndGameS
 	}
 	
 	/**
-	 * Puts Hangman object in the session to be handled in the next turn
+	 * Saves hangman object in database to be handled in the next turn
 	 * @throws BusinessException 
 	 */
 	@Override
