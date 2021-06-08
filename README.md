@@ -6,10 +6,13 @@
 
 * Java 8;
 * MVC Architecture;
+* Design Pattern State;
+* Design Pattern Repository;
 * Spring Boot 2 Data Rest;
 * Spring Boot 2 Data Repository;
 * Spring Boot 2 Embedded Apache Tomcat;
 * Jackson Databind;
+* Lombok;
 * SL4j Logger;
 * TDD with Junit Jupiter;
 * Maven;
